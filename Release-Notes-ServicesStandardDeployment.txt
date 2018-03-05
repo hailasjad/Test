@@ -1,0 +1,165 @@
+Patch Revision: 5.0.1
+Released: 23 February 2018
+
+****************************************
+BUGS FIXED IN THIS REVISION:
+****************************************
+ - JUnit Helper was not initializing in IdentityIQ 7.2
+ - New Custom object for the SSF Field Value Framework was not being correctly deployed
+ - Calling a rule from a script tag in the SSF Field Value Framework was not working
+ - Logging was not working in SSF Mover workflow
+ - Replaced hard coded values in SSF Role Assignment Framework rule library with tokens
+ - Added missing deployCertificationCloser property in build.properties
+ - Corrected misleading logging statement in SSF Leaver rule library
+
+
+Release: SSD v5 GA
+Released: 21 December 2017 
+
+****************************************
+OVERVIEW OF RELEASE
+****************************************
+
+Version 5 of the consolidated Services Standard Deployment (SSD) contains a number of new
+components, enhancements and fixes.
+
+
+****************************************
+NEW TO THIS RELEASE:
+****************************************
+
+SSB: 
+    - Deprecated BeanShell detection: the SSB Build Checks will now scan for deprecated
+      BeanShell code against the version of IdentityIQ that is being built.  This can be 
+      useful when upgrading, where the ability to automatically identify code that is 
+      deprecated in the newer version of IdentityIQ can save a lot of time compared with
+      doing this task manually.
+    - Plugin Compiler: the build process can now automatically compile and build custom 
+      IdentityIQ plugins from their source code, in addition to the auto-deployment
+      functionality previously available.
+    - Updates to SSB User Guide.  Please refer to this guide for more information on the
+      above new features.
+
+SSF Tools:
+    - Certification Closer: a task to close off certifications where access reviews have
+      reached the End Phase but have not all been completed or signed off.  The task will
+      result in the certification work items being removed from certifiers' IdentityIQ 
+      inboxes and the certification status being set to Complete.  Refer to the 
+      Certification Closer User Guide for more details.
+    - Log Level Manager: allows easy selection and setting of Log4j log levels 
+      dynamically within the IdentityIQ UI.  See the Log Level Manager User Guide for more
+      information.
+    - Customization Plugin: provides implementers with the ability to write the logic for
+      IdentityIQ rules, rule libraries and report data sources using Java rather than 
+      BeanShell, with no need to restart application servers or to have access to the 
+      server filesystem.  The Java classes are deployed in a plugin and the tool will 
+      auto-generate stub BeanShell rules and rule libraries that call the code.  This has
+      previously been difficult to achieve because plugin Java classes are loaded in a
+      class loader that is separate from the default class loader used in IdentityIQ.
+      Refer to the Customization Plugin User Guide for details of how to use this tool.
+    - SSF Field Value Framework enhancement: a simpler, more flexible and more efficient 
+      way of defining Field Value logic for Provisioning Policy fields has been 
+      implemented, with the ability to define more of the logic and mappings in a Custom 
+      object and reduce the need for large rule libraries that can cause performance 
+      issues.  See the SSF Features and Frameworks User Guide.
+    - Certification Exclusion Framework enhancement: the Certification Exclusion Framework
+      provides a simpler way to define what should be excluded or included in a 
+      certification, and this enhancement allows exclusion based on account (Link) 
+      attributes.  For example, it is now possible to exclude or include accounts 
+      depending on criteria such as whether they are disabled or if they are defined as
+      service accounts, privileged accounts etc.  See the Certification Exclusion 
+      Framework User Guide for details.
+    - Object Exporter enhancements - the Object Exporter now allows you to filter the 
+      objects that will be exported based on object names matching a defined Regular
+      Expression.  Refer to the Object Exporter User Guide for more information.
+ 
+Bugs fixed since SSD v4 GA
+
+ - The patchdb target in the SSB was failing when the database was SQL Server
+ - The Server-Specific Task Launcher and Manual Correlation Exporter were failing to 
+   launch in IdentityIQ 7.2
+ - The Task Resulter plugin stopped working in IdentityIQ 7.2 when the new property
+   "plugins.angularSnippetEnabled" in iiq.properties was set to true.
+ - The IdentityIQ Loopback Connector had a missing xhtml file that was needed for 
+   configuration
+ - In the Access Request Attachments tool, the supplied version of the Provisioning 
+   Approval Subprocess was not attaching the identity request to approval work items
+ - Deprecated code was present in the SSP Sizing Rule and Database Row Count Rule
+ - The Email Approvals task was failing and approvals were not being processed when the 
+   approver email address, as read from the received email, was not enclosed in chevrons
+ - In the SSF Leaver workflow, an incorrect parameter was being passed to the 
+   getSunsetDate method, causing it to fail
+ - The SSF Role Assignment Framework was not passing the role name to a configured 
+   assignment rule on the role
+ - The SSF Rehire feature was failing when Attribute Synch was included in the plan 
+   construction type
+ - The Object Exporter was ignoring object types that do not have created or modified 
+   timestamps
+ - The Object Exporter was not properly handling requests to terminate the task
+   
+ 
+****************************************
+NOTES
+****************************************
+
+JDK version 6 is no longer supported in this release.  Please use JDK 7 or 8.
+
+To assist the SailPoint Support team, the version of the SSB or SSD used to build 
+IdentityIQ can now be seen by accessing the ServicesStandardVersion.html file at the root
+of the application (e.g. http://servername:8080/ServicesStandardVersion.html).  This
+information is taken from these release notes, so please do not delete this file or move
+it from its current location, and do not delete the html file that is generated during the
+build process.  The page also includes a timestamp indicating the last time the build was
+executed.
+
+SSF provisioning now runs in the background by default for all the SSF features, which
+means provisioning will not happen until the next time the Perform Maintenance task runs.
+This is the recommended setting to avoid identity locking conflicts during identity 
+refreshes.
+
+If you are currently using a version of the SSF features and frameworks from SSD v1.1 or
+earlier there is no simple upgrade procedure for these components.  An upgrade would be a
+more in-depth exercise carried out by a trained and experienced IdentityIQ implementer.
+
+****************************************
+SUMMARY OF SSD
+****************************************
+
+The SSD consists of the following packages:
+
+Services Standard Build (SSB) - Standard packaging and build process.
+Services Standard Frameworks (SSF) - Reusable frameworks, features and tools.  
+Services Standard Words (SSW) - Document templates (not shipped with the SSD but provided 
+on Compass)
+Services Standard Performance (SSP) - Performance tools
+Services Standard Test (SST) - Testing tools
+
+
+****************************************
+SUMMARY OF CONTENTS
+****************************************
+
+SSB:            Standard IdentityIQ build tool.
+
+
+SSF:  
+    Frameworks: Field Value, Role Assignment, Dynamic Emails, Approvals, Provision 
+                Processor
+    Features:   Joiner, Mover, Leaver, Attribute Synch, Terminate Identity, Rehire
+    Tools:      Multi-threaded Beanshell Kit, Report Extractor, XML Exporter Task, 
+                Generic Importer, Email Approvals tool, Break Glass Access Request,
+                Correlation Migrator, Workgroup Migrator, Enhanced Email Notifier,
+                IdentityIQ Loopback Connector, Email Template Editor, Certification
+                Exclusion Framework, Access Request Attachments, Server-Specific 
+                Task Launcher, Password Expiration Reminder, Certification Closer,
+                Log Level Manager, Customization Plugin
+
+SSP: 
+    Tools:      DB Performance Rule, Sizing Rule, DB Row Count Rule, Task Resulter
+
+SST:
+    Tools:      Unit Tester, JUnit IdentityIQ Helper
+    
+
+For more details on the SSD please visit:
+https://community.sailpoint.com/community/identityiq/sailpoint-toolkits/standard-services-deployment
