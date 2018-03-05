@@ -1,4 +1,0 @@
-
-DELETE FROM mysql.user where user='identityiqPlugin';
-FLUSH PRIVILEGES;
-DROP DATABASE IF EXISTS identityiqPlugin;
