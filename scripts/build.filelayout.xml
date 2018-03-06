@@ -6,7 +6,7 @@
 	<target name="-expandGAreleaseAndPatches">
 		<if>
 			<not>
-				<available file="base/ga/identityiq-${IIQVersion}.zip"/>
+				<available file="/tmp/data/identityiq-${IIQVersion}.zip"/>
 			</not>
 			<then>
 				<property name="critical.failure"
